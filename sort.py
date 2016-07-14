@@ -41,7 +41,7 @@ action = 0  #dry run
 if len(response) > 0:
     if response[0] == 'c' or response[0] == 'C':
         action = 1  #copy
-    elif response[0] == 'm' or response[0] == 'm':
+    elif response[0] == 'm' or response[0] == 'M':
         action = 2  #copy
 
 filenames = []
@@ -55,7 +55,8 @@ for f in filenames:
     update_progress(100 * i / len(filenames))
     i += 1
     #nobody likes regex, or low quality videos
-    if "720p" not in f and "720P" not in f and "1080p" not in f and "1080P" not in f:
+    if ("720p" in f or "720P" in f or "1080p" in f or "1080P" in f) and ".mkv" in f:
+
         show, seasonep = regex.match(f).groups()
         showstr = show.strip('.').replace('.', ' ')
 
@@ -70,7 +71,7 @@ for f in filenames:
         if not os.path.exists(path):
             os.makedirs(path)
         if action == 1:
-            shutil.copy2(folder + '/' + f, path)
+            shutil.copy(folder + '/' + f, path)
         else:
-            shutil.move(folder + '/' + f, path)
+            os.rename(folder + '/' + f, path+'/'+f)
 update_progress(100)
