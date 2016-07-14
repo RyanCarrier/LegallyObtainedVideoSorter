@@ -1,4 +1,4 @@
-#/usr/bin/python
+#!/usr/bin/python
 from os import walk
 import shutil
 import os
