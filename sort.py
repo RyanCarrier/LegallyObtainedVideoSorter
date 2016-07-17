@@ -26,7 +26,7 @@ def update_progress(progress,current):
 	if 52+4+len(current)>80:
 		current=current[:80-52-54]
     print '\r[{0}{1}] {2}%'.format('#' * (progress / 2),
-                                   ' ' * ((100 - progress) / 2), progress),current,
+                                   ' ' * ((100 - progress) / 2), progress), current,
     os.sys.stdout.flush()
 
 
