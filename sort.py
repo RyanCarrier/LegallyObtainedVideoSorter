@@ -9,12 +9,8 @@ pwd = os.getcwd()
 
 
 def fix(folder):
-    if len(folder) == 0:
-        return pwd + '/../'
     if folder[0] == '/':
         return folder
-    if folder[0] == '.' and folder[1] == '/':
-        return pwd + '/' + folder[2:]
     return pwd + '/' + folder
 
 
@@ -26,15 +22,22 @@ def fixAndCheck(folder):
     return folder
 
 
-def update_progress(progress):
+def update_progress(progress,current):
+	if 52+4+len(current)>80:
+		current=current[:80-52-54]
     print '\r[{0}{1}] {2}%'.format('#' * (progress / 2),
-                                   ' ' * ((100 - progress) / 2), progress),
+                                   ' ' * ((100 - progress) / 2), progress),current,
     os.sys.stdout.flush()
 
 
-folder = raw_input("Enter video folder (default; ../): ")
+default = "./"
+folder = raw_input("Enter source folder: %s"%default + chr(8)*len(default))
+if not folder:
+	folder = default
 folder = fixAndCheck(folder)
-targetfolder = raw_input("Enter target folder (default: ../): ")
+
+default = "../"
+targetfolder = raw_input("Enter source folder: %s"%default + chr(8)*len(default))
 targetfolder = fixAndCheck(targetfolder)
 response = raw_input("Copy, Move or dry run: ")
 action = 0  #dry run
