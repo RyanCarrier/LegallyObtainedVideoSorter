@@ -7,7 +7,6 @@ from time import sleep
 
 pwd = os.getcwd()
 
-
 def fix(folder):
     if len(folder) == 0:
         return pwd + '/../'
@@ -32,17 +31,21 @@ def update_progress(progress):
     os.sys.stdout.flush()
 
 
-folder = raw_input("Enter video folder (default; ../): ")
+folder = raw_input("Enter video folder (default; ./): ")
+if not folder:
+    folder="./"
 folder = fixAndCheck(folder)
 targetfolder = raw_input("Enter target folder (default: ../): ")
+if not targetfolder:
+    targetfolder="../"
 targetfolder = fixAndCheck(targetfolder)
-response = raw_input("Copy, Move or dry run: ")
-action = 0  #dry run
-if len(response) > 0:
+response = raw_input("Copy, Move or dry run (default Move): ")
+action = 2  #dry run
+if response:
     if response[0] == 'c' or response[0] == 'C':
         action = 1  #copy
-    elif response[0] == 'm' or response[0] == 'M':
-        action = 2  #copy
+    elif response[0] == 'd' or response[0] == 'D':
+        action = 0  #copy
 
 filenames = []
 for (dirpath, dirnames, f) in walk(folder):
@@ -55,7 +58,7 @@ for f in filenames:
     update_progress(100 * i / len(filenames))
     i += 1
     #nobody likes regex, or low quality videos
-    if ("720p" in f or "720P" in f or "1080p" in f or "1080P" in f) and ".mkv" in f:
+    if ("HDTV" in f or "720p" in f or "720P" in f or "1080p" in f or "1080P" in f) and ".mkv" in f:
 
         show, seasonep = regex.match(f).groups()
         showstr = show.strip('.').replace('.', ' ')
