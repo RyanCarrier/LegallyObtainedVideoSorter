@@ -37,6 +37,8 @@ folder = fixAndCheck(folder)
 default = "../"
 targetfolder = raw_input("Enter source folder: %s" % default + chr(8) * len(
     default))
+if not targetfolder:
+    targetfolder=default
 targetfolder = fixAndCheck(targetfolder)
 response = raw_input("Copy, Move or dry run: ")
 action = 2  # dry run
@@ -55,7 +57,6 @@ for (dirpath, dirnames, f) in walk(folder):
 regex = re.compile(r'(.*)(\b[s, S]\d{2}[e, E]\d{2})', re.IGNORECASE)
 i = 0
 for f in filenames:
-    update_progress(100 * i / len(filenames))
     i += 1
     if ("HDTV" in f or "720p" in f or "720P" in f or "1080p" in f or "1080P" in f) and ".mkv" in f:
         show, seasonep = regex.match(f).groups()
@@ -76,4 +77,4 @@ for f in filenames:
         else:
             os.rename(folder + '/' + f, path + '/' + f)
     i += 1
-update_progress(100, f)
+update_progress(100, "")
