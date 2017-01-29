@@ -59,6 +59,8 @@ i = 0
 for f in filenames:
     i += 1
     if ("HDTV" in f or "720p" in f or "720P" in f or "1080p" in f or "1080P" in f) and (".mkv" in f or ".mp4" in f or ".avi" in f):
+        if regex.match(f) is None:
+            continue
         show, seasonep = regex.match(f).groups()
         showstr = show.strip('.').replace('.', ' ')
         season = seasonep[1:3]
