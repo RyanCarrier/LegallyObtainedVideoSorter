@@ -58,7 +58,7 @@ regex = re.compile(r'(.*)(\b[s, S]\d{2}[e, E]\d{2})', re.IGNORECASE)
 i = 0
 for f in filenames:
     i += 1
-    if ("WEB" in f or "PDTV" in f or "HDTV" in f or "720p" in f or "720P" in f or "1080p" in f or "1080P" in f) and (".mkv" in f or ".mp4" in f or ".avi" in f):
+    if ("WEB" in f.upper() or "PDTV" in f.upper() or "HDTV" in f.upper() or "720P" in f.upper() or "1080P" in f.upper()) and (".mkv" in f.lower() or ".mp4" in f.lower() or ".avi" in f.lower()):
         if regex.match(f) is None:
             continue
         show, seasonep = regex.match(f).groups()
