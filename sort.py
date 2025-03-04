@@ -1,8 +1,9 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 from os import walk
 import shutil
 import os
 import re
+import sys
 
 qualitieslower=["pdtv","hdtv","720p","1080p"]
 filetypelower=[".mkv",".mp4",".avi",".mpg"]
@@ -18,42 +19,39 @@ def fix(folder):
 def fixAndCheck(folder):
     folder = fix(folder)
     if not os.path.isdir(folder):
-        print "Folder doesn't exist."
+        print("Folder doesn't exist.")
         exit(1)
     return folder
 
 
 def update_progress(progress):
-    print '\r[{0}{1}] {2}%'.format('#' * (progress / 2),
-                                         ' ' * ((100 - progress) /
-                                                2), progress),
-    os.sys.stdout.flush()
+    print('\r[{0}{1}] {2}%'.format('#' * (progress // 2), ' ' * ((100 - progress) // 2), progress), sys.stdout.flush())
 
 def move(sourceFolder,sourceFile,destFolder,filenames,action):
     if not action:
-        print "\nWould move ", sourceFolder + '/' + sourceFile, " to", destFolder
+        print("\nWould move ", sourceFolder + '/' + sourceFile, " to", destFolder)
         return
     if not os.path.exists(destFolder):
         os.makedirs(destFolder)
-    update_progress(100 * i / len(filenames))
+    update_progress((100 * i) // len(filenames))
     if action == 1:
         shutil.copy(sourceFolder + '/' + f, destFolder)
     else:
         os.rename(sourceFolder + '/' + f, destFolder + '/' + f)
 
 default = "./"
-folder = raw_input("Enter source folder: %s" % default + chr(8) * len(default))
+folder = input("Enter source folder: %s" % default + chr(8) * len(default))
 if not folder:
     folder = default
 folder = fixAndCheck(folder)
 
 default = "../"
-targetfolder = raw_input("Enter source folder: %s" % default + chr(8) * len(
+targetfolder = input("Enter target folder: %s" % default + chr(8) * len(
     default))
 if not targetfolder:
     targetfolder=default
 targetfolder = fixAndCheck(targetfolder)
-response = raw_input("Copy, Move or dry run: M"+chr(8))
+response = input("Copy, Move or dry run: M"+chr(8))
 action = 2  # Move
 
 if response:
@@ -79,7 +77,10 @@ for f in filenames:
             if 'ufc' in f.lower():
                 move(folder,f,targetfolder+"UFC/"+f.split('.')[1],filenames,action)
             continue
-        show, seasonep = regex.match(f.replace(' ','.')).groups()
+        reg_result = regex.match(f.replace(' ','.'))  
+        if reg_result is None:
+            continue
+        show, seasonep = reg_result.groups()
         showstr = show.strip('.').replace('.', ' ').capitalize()
         showstrsplit=showstr.split(' ')
         showstr=showstrsplit[0]
